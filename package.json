@@ -1,0 +1,24 @@
+{
+  "name": "crank-coin",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/Abdillahzakkie/CrankCoin-SC",
+  "author": "zakariyyaopeyemi@gmail.com",
+  "license": "MIT",
+  "scripts": {
+    "ganache": "ganache-cli --deterministic -m vocal impose income leader bread wash flat kiwi kind aunt fee also",
+    "compile": "truffle compile --all",
+    "migrate:dev": "truffle migrate --reset --network development",
+    "migrate:kovan": "truffle migrate --reset --network kovan",
+    "test": "truffle test"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.0.0-beta.0",
+    "@openzeppelin/test-helpers": "^0.5.10",
+    "@truffle/hdwallet-provider": "^1.2.2",
+    "chai": "^4.3.0",
+    "dotenv": "^8.2.0",
+    "ganache-cli": "^6.12.2",
+    "truffle": "^5.1.65"
+  }
+}
