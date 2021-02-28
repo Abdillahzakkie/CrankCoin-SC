@@ -2,3 +2,4 @@ nodle_modules
 .env
 build
 node_modules
+.vscode
