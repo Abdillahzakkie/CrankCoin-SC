@@ -246,48 +246,49 @@ contract("CrankCoin", async ([deployer, user1, user2]) => {
             assert(false);
         })
 
-        it("should add stake to contract balance", async () => {
-            const contractBalance = await this.token.balanceOf(this.token.address);
-            const totalLockedToken = await this.token.getTotallockedToken();
+        it("should reject if unlock time has not exceed", async () => {
+            try {
+                await this.token.unlock({ from: user1 });
+            } catch (error) {
+                assert(error.message.includes("CrankCoin: wait till lock time exceeds"));
+                return;
+            }
+            assert(false);
+        })
+
+
+        // it("should add stake to contract balance", async () => {
+        //     const contractBalance = await this.token.balanceOf(this.token.address);
+        //     const totalLockedToken = await this.token.getTotallockedToken();
         
-            assert.equal(contractBalance.toString(), web3.utils.toWei("45.125"));
-            assert.equal(totalLockedToken.toString(), web3.utils.toWei("47.5"));
-        })
+        //     assert.equal(contractBalance.toString(), web3.utils.toWei("45.125"));
+        //     assert.equal(totalLockedToken.toString(), web3.utils.toWei("47.5"));
+        // })
 
-        it("should unlock tokens properly", async () => {
-            const balanceBefore = await this.token.balanceOf(user1);
-            await this.token.unlock({ from: user1 });
-            const balanceAfter = await this.token.balanceOf(user1);
-            const { amount } = await this.token.locks(user1);
-            const totalLockedToken = await this.token.getTotallockedToken();
-            const contractBalance = await this.token.balanceOf(this.token.address);
+        // it("should unlock tokens properly", async () => {
+        //     const balanceBefore = await this.token.balanceOf(user1);
+        //     await this.token.unlock({ from: user1 });
+        //     const balanceAfter = await this.token.balanceOf(user1);
+        //     const { amount } = await this.token.locks(user1);
+        //     const totalLockedToken = await this.token.getTotallockedToken();
+        //     const contractBalance = await this.token.balanceOf(this.token.address);
 
-            assert.equal(amount.toString(), "0");
-            assert.equal(balanceBefore.toString(), "0");
-            assert.equal(balanceAfter.toString(), web3.utils.toWei("54.15"), "ether");
-            assert.equal(totalLockedToken.toString(), "0");
-            assert.equal(contractBalance.toString(), "0")
-        })
+        //     assert.equal(amount.toString(), "0");
+        //     assert.equal(balanceBefore.toString(), "0");
+        //     assert.equal(balanceAfter.toString(), web3.utils.toWei("54.15"), "ether");
+        //     assert.equal(totalLockedToken.toString(), "0");
+        //     assert.equal(contractBalance.toString(), "0")
+        // })
 
-        it("should emit NewUnlock event", async () => {
-            const { amount } = await this.token.locks(user1);
-            const _rewards = (Number(web3.utils.fromWei(amount, "ether")) * 20) / 100;
-            const _reciept = await this.token.unlock({ from: user1 });
-            expectEvent(_reciept, "NewUnlock", {
-                user: user1,
-                initialStake: amount.toString(),
-                rewards: web3.utils.toWei(_rewards.toString(), "ether")
-            });
-        })
-
-        // it("should reject if unlock time has not exceed", async () => {
-        //     try {
-        //         await this.token.unlock({ from: user1 });
-        //     } catch (error) {
-        //         assert(error.message.includes("CrankCoin: wait till lock time exceeds"));
-        //         return;
-        //     }
-        //     assert(false);
+        // it("should emit NewUnlock event", async () => {
+        //     const { amount } = await this.token.locks(user1);
+        //     const _rewards = (Number(web3.utils.fromWei(amount, "ether")) * 20) / 100;
+        //     const _reciept = await this.token.unlock({ from: user1 });
+        //     expectEvent(_reciept, "NewUnlock", {
+        //         user: user1,
+        //         initialStake: amount.toString(),
+        //         rewards: web3.utils.toWei(_rewards.toString(), "ether")
+        //     });
         // })
     })
 

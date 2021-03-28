@@ -320,8 +320,8 @@ contract CrankCoin is Ownable, IERC20 {
         _transfer(_msgSender(), address(this), _amount);
         _totalLockedTokens += _amount;
         
-        // uint256 _unlockTime = block.timestamp + 30 days;
-        uint256 _unlockTime = block.timestamp;
+        uint256 _unlockTime = block.timestamp + 30 days;
+        // uint256 _unlockTime = block.timestamp;
 
         Lock memory _newLock = Lock(_msgSender(), _amount, _unlockTime);
         locks[_msgSender()] = _newLock;
